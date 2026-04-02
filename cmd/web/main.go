@@ -3,7 +3,6 @@ package main
 import (
 	"crud-test/internal/config"
 	"crud-test/internal/database"
-	"crud-test/internal/entity"
 	"log"
 	"net/http"
 
@@ -14,13 +13,9 @@ func main() {
 	// Initialize configuration
 	viperConfig := config.NewViper()
 
-	// Connect to database
-	db := database.Connect()
-
-	// Auto-migrate database schema
-	err := db.AutoMigrate(&entity.Category{}, &entity.Book{})
-	if err != nil {
-		log.Fatal("Failed to migrate database:", err)
+	// Ensure the application can reach the configured database before serving traffic.
+	if _, err := database.Connect(); err != nil {
+		log.Fatal("Failed to connect to database:", err)
 	}
 
 	// Initialize Gin router

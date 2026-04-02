@@ -5,7 +5,7 @@ import "gorm.io/gorm"
 type Category struct {
 	gorm.Model
 	ID    uint   `gorm:"primaryKey" json:"id"`
-	Name  string `gorm:"not null;uniqueIndex" json:"name" validate:"required"`
+	Name  string `gorm:"size:255;not null;uniqueIndex" json:"name" validate:"required"`
 	Books []Book `gorm:"foreignKey:CategoryID" json:"books,omitempty"`
 }
 
